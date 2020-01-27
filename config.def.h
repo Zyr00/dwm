@@ -1,4 +1,5 @@
 /* See LICENSE file for copyright and license details. */
+#include <X11/XF86keysym.h>
 
 /* appearance */
 static const unsigned int borderpx  = 1;        /* border pixel of windows */
@@ -11,7 +12,7 @@ static const unsigned int baralpha = 0xd0;
 static const unsigned int borderalpha = OPAQUE;
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
-	[SchemeNorm] = { "#f3f4f5", "#2f343f", "#000000" },
+	[SchemeNorm] = { "#f3f4f5", "#2f343f", "#2f343f" },
 	[SchemeSel]  = { "#f3f4f5", "#5294e2", "#5294e2" },
 };
 static const unsigned int alphas[][3]      = {
@@ -46,6 +47,12 @@ static const Layout layouts[] = {
 };
 
 /* key definitions */
+#define V_MUTE XF86XK_AudioMute
+#define V_UP XF86XK_AudioRaiseVolume
+#define V_DOWN XF86XK_AudioLowerVolume
+#define B_UP XF86XK_MonBrightnessUp
+#define B_DOWN XF86XK_MonBrightnessDown
+
 #define MODKEY Mod4Mask
 #define TAGKEYS(KEY,TAG) \
 	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
@@ -60,6 +67,11 @@ static const Layout layouts[] = {
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, NULL };
 static const char *termcmd[]  = { "st", NULL };
+static const char *volmutecmd[] = { "amixer", "-q", "sset", "Master", "toggle", NULL };
+static const char *volupcmd[] = { "amixer", "-q", "sset", "Master", "5%+", "unmute", NULL };
+static const char *voldowncmd[] = { "amixer", "-q", "sset", "Master", "5%-", "unmute", NULL };
+static const char *brupcmd[] = { "xbacklight", "-inc", "10", NULL };
+static const char *brdowncmd[] = { "xbacklight", "-dec", "10", NULL };
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -89,6 +101,11 @@ static Key keys[] = {
 	{ MODKEY,                       XK_minus,  setgaps,        {.i = -1 } },
 	{ MODKEY,                       XK_equal,  setgaps,        {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_equal,  setgaps,        {.i = 0  } },
+        { 0,                            B_UP,      spawn,          {.v = brupcmd } },
+        { 0,                            B_DOWN,    spawn,          {.v = brdowncmd } },
+        { 0,                            V_MUTE,    spawn,          {.v = volmutecmd } },
+        { 0,                            V_UP,      spawn,          {.v = volupcmd } },
+        { 0,                            V_DOWN,    spawn,          {.v = voldowncmd} },
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
 	TAGKEYS(                        XK_3,                      2)
