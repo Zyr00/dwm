@@ -1,9 +1,14 @@
 /* See LICENSE file for copyright and license details. */
 #include <X11/XF86keysym.h>
+#include "fibonacci.c"
+#include "layouts.c"
+#include "horizgrid.c"
+
+#define GAPPS 15
 
 /* appearance */
 static const unsigned int borderpx  = 1;        /* border pixel of windows */
-static const unsigned int gappx     = 15;        /* gaps between windows */
+static const unsigned int gappx     = GAPPS;    /* gaps between windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
@@ -29,9 +34,8 @@ static const Rule rules[] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class      instance    title       tags mask     isfloating   monitor */
-	{ "Gimp",     NULL,       NULL,       0,            1,           -1 },
-	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
+	/* class      instance    title                     tags mask     isfloating   monitor */
+	{ NULL,       NULL,       "Picture-in-Picture",        0,            1,           -1 },
 };
 
 /* layout(s) */
@@ -42,8 +46,15 @@ static const int resizehints = 1;    /* 1 means respect size hints in tiled resi
 static const Layout layouts[] = {
 	/* symbol     arrange function */
 	{ "[]=",      tile },    /* first entry is default */
+ 	{ "[@]",      spiral },
+ 	{ "[\\]",     dwindle },
+	{ "|M|",      centeredmaster },
+	{ ">M>",      centeredfloatingmaster },
+	{ "HHH",      grid },
+	{ "###",      horizgrid },
 	{ "><>",      NULL },    /* no layout function means floating behavior */
 	{ "[M]",      monocle },
+	{ NULL,       NULL },
 };
 
 /* key definitions */
@@ -67,11 +78,15 @@ static const Layout layouts[] = {
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, NULL };
 static const char *termcmd[]  = { "st", NULL };
+
 static const char *volmutecmd[] = { "amixer", "-q", "sset", "Master", "toggle", NULL };
 static const char *volupcmd[] = { "amixer", "-q", "sset", "Master", "5%+", "unmute", NULL };
 static const char *voldowncmd[] = { "amixer", "-q", "sset", "Master", "5%-", "unmute", NULL };
+
 static const char *brupcmd[] = { "xbacklight", "-inc", "10", NULL };
 static const char *brdowncmd[] = { "xbacklight", "-dec", "10", NULL };
+
+static const char *firefox[] = { "firefox", NULL };
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -90,6 +105,8 @@ static Key keys[] = {
 	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
 	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
 	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
+        { MODKEY|ControlMask,           XK_comma,  cyclelayout,    {.i = +1 } },
+        { MODKEY|ControlMask,           XK_period, cyclelayout,    {.i = -1 } },
 	{ MODKEY,                       XK_space,  setlayout,      {0} },
 	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
 	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
@@ -98,9 +115,10 @@ static Key keys[] = {
 	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
-	{ MODKEY,                       XK_minus,  setgaps,        {.i = -1 } },
-	{ MODKEY,                       XK_equal,  setgaps,        {.i = +1 } },
-	{ MODKEY|ShiftMask,             XK_equal,  setgaps,        {.i = 0  } },
+	{ MODKEY,                       XK_minus,  setgaps,        {.i = -2 } },
+	{ MODKEY,                       XK_plus,   setgaps,        {.i = +2 } },
+	{ MODKEY|ShiftMask,             XK_r,      setgaps,        {.i = GAPPS } },
+        { MODKEY|ShiftMask,             XK_f,      spawn,          {.v = firefox } },
         { 0,                            B_UP,      spawn,          {.v = brupcmd } },
         { 0,                            B_DOWN,    spawn,          {.v = brdowncmd } },
         { 0,                            V_MUTE,    spawn,          {.v = volmutecmd } },
