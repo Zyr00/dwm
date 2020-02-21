@@ -34,8 +34,9 @@ static const Rule rules[] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class      instance    title                     tags mask     isfloating   monitor */
-	{ NULL,       NULL,       "Picture-in-Picture",        0,            1,           -1 },
+	/* class      instance    title                     tags mask        isfloating   monitor */
+	{ NULL,       NULL,       "Picture-in-Picture",        0,              1,           -1 },
+        { "discord",  NULL,       NULL,                        1 << 8,         0,           -1},
 };
 
 /* layout(s) */
@@ -79,6 +80,8 @@ static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() 
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, NULL };
 static const char *termcmd[]  = { "st", NULL };
 
+static const char *flameshot[] = { "flameshot", "gui", NULL };
+
 static const char *volmutecmd[] = { "amixer", "-q", "sset", "Master", "toggle", NULL };
 static const char *volupcmd[] = { "amixer", "-q", "sset", "Master", "5%+", "unmute", NULL };
 static const char *voldowncmd[] = { "amixer", "-q", "sset", "Master", "5%-", "unmute", NULL };
@@ -87,6 +90,7 @@ static const char *brupcmd[] = { "xbacklight", "-inc", "10", NULL };
 static const char *brdowncmd[] = { "xbacklight", "-dec", "10", NULL };
 
 static const char *firefox[] = { "firefox", NULL };
+static const char *discord[] = { "discord", NULL };
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -117,13 +121,15 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
 	{ MODKEY,                       XK_minus,  setgaps,        {.i = -2 } },
 	{ MODKEY,                       XK_plus,   setgaps,        {.i = +2 } },
-	{ MODKEY|ShiftMask,             XK_r,      setgaps,        {.i = GAPPS } },
+	{ MODKEY|ShiftMask,             XK_r,      setgaps,        {.i = -gappx } },
         { MODKEY|ShiftMask,             XK_f,      spawn,          {.v = firefox } },
+        { MODKEY|ShiftMask,             XK_d,      spawn,          {.v = discord } },
         { 0,                            B_UP,      spawn,          {.v = brupcmd } },
         { 0,                            B_DOWN,    spawn,          {.v = brdowncmd } },
         { 0,                            V_MUTE,    spawn,          {.v = volmutecmd } },
         { 0,                            V_UP,      spawn,          {.v = volupcmd } },
         { 0,                            V_DOWN,    spawn,          {.v = voldowncmd} },
+        { 0,                            XK_Print,  spawn,          {.v = flameshot } },
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
 	TAGKEYS(                        XK_3,                      2)
