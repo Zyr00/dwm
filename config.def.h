@@ -18,7 +18,7 @@ static const unsigned int borderalpha    = OPAQUE;
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
 	[SchemeNorm] = { "#f3f4f5", "#223345", "#223345" },
-	[SchemeSel]  = { "#f3f4f5", "#BD4455", "#BD4455" },
+	[SchemeSel]  = { "#f3f4f5", "#5294E2", "#5294E2" },
 };
 static const unsigned int alphas[][3]      = {
 	/*               fg      bg        border     */
@@ -84,6 +84,7 @@ static const char *termcmd[]  = { "st", NULL };
 static const char *flameshot[] = { "flameshot", "gui", NULL };
 static const char *lockcmd[] = { "i3lockrc", "/home/tunes/.config/wall.jpg", NULL };
 static const char *locksuspendcmd[] = { "suspend", NULL };
+static const char *lockhibernatecmd[] = { "hibernate", NULL };
 
 static const char *volmutecmd[] = { "amixer", "-q", "sset", "Master", "toggle", NULL };
 static const char *volupcmd[] = { "amixer", "-q", "sset", "Master", "5%+", "unmute", NULL };
@@ -131,6 +132,7 @@ static Key keys[] = {
         { MODKEY|ShiftMask,             XK_s,      spawn,          {.v = steam } },
         { MODKEY|ShiftMask,             XK_l,      spawn,          {.v = lockcmd } },
         { MODKEY|ControlMask,           XK_l,      spawn,          {.v = locksuspendcmd } },
+        { MODKEY|ControlMask,           XK_h,      spawn,          {.v = lockhibernatecmd } },
         { 0,                            B_UP,      spawn,          {.v = brupcmd } },
         { 0,                            B_DOWN,    spawn,          {.v = brdowncmd } },
         { 0,                            V_MUTE,    spawn,          {.v = volmutecmd } },
