@@ -18,7 +18,7 @@ static const unsigned int borderalpha    = OPAQUE;
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
 	[SchemeNorm] = { "#f3f4f5", "#223345", "#223345" },
-	[SchemeSel]  = { "#f3f4f5", "#5294E2", "#5294E2" },
+	[SchemeSel]  = { "#f3f4f5", "#333399", "#5353c6" },
 };
 static const unsigned int alphas[][3]      = {
 	/*               fg      bg        border     */
@@ -85,6 +85,7 @@ static const char *flameshot[] = { "flameshot", "gui", NULL };
 static const char *lockcmd[] = { "i3lockrc", "/home/tunes/.config/wall.jpg", NULL };
 static const char *locksuspendcmd[] = { "suspend", NULL };
 static const char *lockhibernatecmd[] = { "hibernate", NULL };
+static const char *endxsession[] = { "killall", "xinit", NULL };
 
 static const char *volmutecmd[] = { "amixer", "-q", "sset", "Master", "toggle", NULL };
 static const char *volupcmd[] = { "amixer", "-q", "sset", "Master", "5%+", "unmute", NULL };
@@ -126,13 +127,13 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
 	{ MODKEY,                       XK_minus,  setgaps,        {.i = -2 } },
 	{ MODKEY,                       XK_plus,   setgaps,        {.i = +2 } },
-	{ MODKEY|ShiftMask,             XK_r,      setgaps,        {.i = -gappx } },
         { MODKEY|ShiftMask,             XK_f,      spawn,          {.v = firefox } },
         { MODKEY|ShiftMask,             XK_d,      spawn,          {.v = discord } },
         { MODKEY|ShiftMask,             XK_s,      spawn,          {.v = steam } },
         { MODKEY|ShiftMask,             XK_l,      spawn,          {.v = lockcmd } },
         { MODKEY|ControlMask,           XK_l,      spawn,          {.v = locksuspendcmd } },
         { MODKEY|ControlMask,           XK_h,      spawn,          {.v = lockhibernatecmd } },
+        { MODKEY|ShiftMask,             XK_q,      spawn,          {.v = endxsession } },
         { 0,                            B_UP,      spawn,          {.v = brupcmd } },
         { 0,                            B_DOWN,    spawn,          {.v = brdowncmd } },
         { 0,                            V_MUTE,    spawn,          {.v = volmutecmd } },
@@ -148,7 +149,7 @@ static Key keys[] = {
 	TAGKEYS(                        XK_7,                      6)
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
-	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
+	{ MODKEY|ShiftMask,             XK_r,      quit,           {0} },
 };
 
 /* button definitions */
