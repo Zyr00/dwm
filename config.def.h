@@ -77,7 +77,7 @@ static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, NULL };
 static const char *termcmd[]  = { "st", NULL };
 
 static const char *flameshot[] = { "flameshot", "gui", NULL };
-static const char *lockcmd[] = { "i3lockrc", "/home/tunes/.config/wall.jpg", NULL };
+static const char *lockcmd[] = { "i3lockrc", NULL };
 static const char *locksuspendcmd[] = { "suspend", NULL };
 static const char *lockhibernatecmd[] = { "hibernate", NULL };
 
