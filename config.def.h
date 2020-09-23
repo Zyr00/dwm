@@ -1,10 +1,9 @@
 /* See LICENSE file for copyright and license details. */
 #include <X11/XF86keysym.h>
 
-#define GAPPS 15
-
+#define GAPPS 5
 /* appearance */
-static const unsigned int borderpx       = 1;     /* border pixel of windows */
+static const unsigned int borderpx       = 2;     /* border pixel of windows */
 static const unsigned int gappx          = GAPPS; /* gaps between windows */
 static const unsigned int snap           = 32;    /* snap pixel */
 static const int swallowfloating         = 0;     /* 1 means swallow floating windows by default */
@@ -60,6 +59,7 @@ static const Layout layouts[] = {
 #define V_DOWN XF86XK_AudioLowerVolume
 #define B_UP XF86XK_MonBrightnessUp
 #define B_DOWN XF86XK_MonBrightnessDown
+#define MOUSE XF86XK_TouchpadToggle
 
 #define MODKEY Mod4Mask
 #define TAGKEYS(KEY,TAG) \
@@ -79,7 +79,7 @@ static const char *termcmd[]  = { "st", NULL };
 static const char *flameshot[] = { "flameshot", "gui", NULL };
 static const char *lockcmd[] = { "i3lockrc", NULL };
 static const char *locksuspendcmd[] = { "suspend", NULL };
-static const char *lockhibernatecmd[] = { "hibernate", NULL };
+static const char *touchpadtoggle[] = { "touchpad_toggle", NULL };
 
 static const char *volmutecmd[] = { "amixer", "-q", "sset", "Master", "toggle", NULL };
 static const char *volupcmd[] = { "amixer", "-q", "sset", "Master", "5%+", "unmute", NULL };
@@ -93,52 +93,53 @@ static const char *discord[] = { "discord", NULL };
 static const char *steam[]   = { "steam", NULL };
 
 static Key keys[] = {
-	/* modifier                     key        function        argument */
-	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
-	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
-	{ MODKEY,                       XK_b,      togglebar,      {0} },
-	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
-	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
-	{ MODKEY,                       XK_i,      incnmaster,     {.i = +1 } },
-	{ MODKEY,                       XK_d,      incnmaster,     {.i = -1 } },
-	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
-	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
-	{ MODKEY,                       XK_Return, zoom,           {0} },
-	{ MODKEY,                       XK_Tab,    view,           {0} },
-	{ MODKEY|ShiftMask,             XK_c,      killclient,     {0} },
-	{ MODKEY,                       XK_space,  setlayout,      {0} },
-	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
-	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
-	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
-	{ MODKEY,                       XK_comma,  focusmon,       {.i = -1 } },
-	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
-	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
-	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
-	{ MODKEY,                       XK_minus,  setgaps,        {.i = -1 } },
-	{ MODKEY,                       XK_plus,   setgaps,        {.i = +1 } },
-	{ MODKEY|ShiftMask,             XK_equal,  setgaps,        {.i = 0 } },
-        { MODKEY|ShiftMask,             XK_f,      spawn,          {.v = firefox } },
-        { MODKEY|ShiftMask,             XK_d,      spawn,          {.v = discord } },
-        { MODKEY|ShiftMask,             XK_s,      spawn,          {.v = steam } },
-        { MODKEY|ShiftMask,             XK_l,      spawn,          {.v = lockcmd } },
-        { MODKEY|ControlMask,           XK_l,      spawn,          {.v = locksuspendcmd } },
-        { MODKEY|ControlMask,           XK_h,      spawn,          {.v = lockhibernatecmd } },
-        { 0,                            B_UP,      spawn,          {.v = brupcmd } },
-        { 0,                            B_DOWN,    spawn,          {.v = brdowncmd } },
-        { 0,                            V_MUTE,    spawn,          {.v = volmutecmd } },
-        { 0,                            V_UP,      spawn,          {.v = volupcmd } },
-        { 0,                            V_DOWN,    spawn,          {.v = voldowncmd} },
-        { 0,                            XK_Print,  spawn,          {.v = flameshot } },
-	TAGKEYS(                        XK_1,                      0)
-	TAGKEYS(                        XK_2,                      1)
-	TAGKEYS(                        XK_3,                      2)
-	TAGKEYS(                        XK_4,                      3)
-	TAGKEYS(                        XK_5,                      4)
-	TAGKEYS(                        XK_6,                      5)
-	TAGKEYS(                        XK_7,                      6)
-	TAGKEYS(                        XK_8,                      7)
-	TAGKEYS(                        XK_9,                      8)
-	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
+	/* modifier                     key            function        argument */
+	{ MODKEY,                       XK_p,          spawn,          {.v = dmenucmd } },
+	{ MODKEY|ShiftMask,             XK_Return,     spawn,          {.v = termcmd } },
+	{ MODKEY,                       XK_b,          togglebar,      {0} },
+	{ MODKEY,                       XK_j,          focusstack,     {.i = +1 } },
+	{ MODKEY,                       XK_k,          focusstack,     {.i = -1 } },
+	{ MODKEY,                       XK_i,          incnmaster,     {.i = +1 } },
+	{ MODKEY,                       XK_d,          incnmaster,     {.i = -1 } },
+	{ MODKEY,                       XK_h,          setmfact,       {.f = -0.05} },
+	{ MODKEY,                       XK_l,          setmfact,       {.f = +0.05} },
+	{ MODKEY,                       XK_Return,     zoom,           {0} },
+	{ MODKEY,                       XK_Tab,        view,           {0} },
+	{ MODKEY|ShiftMask,             XK_c,          killclient,     {0} },
+	{ MODKEY,                       XK_space,      setlayout,      {0} },
+	{ MODKEY|ShiftMask,             XK_space,      togglefloating, {0} },
+	{ MODKEY,                       XK_0,          view,           {.ui = ~0 } },
+	{ MODKEY|ShiftMask,             XK_0,          tag,            {.ui = ~0 } },
+	{ MODKEY,                       XK_comma,      focusmon,       {.i = -1 } },
+	{ MODKEY,                       XK_period,     focusmon,       {.i = +1 } },
+	{ MODKEY|ShiftMask,             XK_comma,      tagmon,         {.i = -1 } },
+	{ MODKEY|ShiftMask,             XK_period,     tagmon,         {.i = +1 } },
+	{ MODKEY,                       XK_minus,      setgaps,        {.i = -1 } },
+	{ MODKEY,                       XK_plus,       setgaps,        {.i = +1 } },
+	{ MODKEY,                       XK_ccedilla,   setgaps,        {.i = 0 } },
+	{ MODKEY,                       XK_masculine,  setgaps,        {.i = GAPPS } },
+        { MODKEY|ShiftMask,             XK_f,          spawn,          {.v = firefox } },
+        { MODKEY|ShiftMask,             XK_d,          spawn,          {.v = discord } },
+        { MODKEY|ShiftMask,             XK_s,          spawn,          {.v = steam } },
+        { MODKEY|ShiftMask,             XK_l,          spawn,          {.v = lockcmd } },
+        { MODKEY|ControlMask,           XK_l,          spawn,          {.v = locksuspendcmd } },
+        { 0,                            MOUSE,         spawn,          {.v = touchpadtoggle } },
+        { 0,                            B_UP,          spawn,          {.v = brupcmd } },
+        { 0,                            B_DOWN,        spawn,          {.v = brdowncmd } },
+        { 0,                            V_MUTE,        spawn,          {.v = volmutecmd } },
+        { 0,                            V_UP,          spawn,          {.v = volupcmd } },
+        { 0,                            V_DOWN,        spawn,          {.v = voldowncmd} },
+        { 0,                            XK_Print,      spawn,          {.v = flameshot } },
+	TAGKEYS(                        XK_1,                          0)
+	TAGKEYS(                        XK_2,                          1)
+	TAGKEYS(                        XK_3,                          2)
+	TAGKEYS(                        XK_4,                          3)
+	TAGKEYS(                        XK_5,                          4)
+	TAGKEYS(                        XK_6,                          5)
+	TAGKEYS(                        XK_7,                          6)
+	TAGKEYS(                        XK_8,                          7)
+	TAGKEYS(                        XK_9,                          8)
+	{ MODKEY|ShiftMask,             XK_q,          quit,           {0} },
 };
 
 /* button definitions */
