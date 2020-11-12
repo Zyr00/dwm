@@ -10,17 +10,10 @@ static const int swallowfloating         = 0;     /* 1 means swallow floating wi
 static const int showbar                 = 1;     /* 0 means no bar */
 static const int topbar                  = 1;     /* 0 means bottom bar */
 static const char *fonts[]               = { "Fira Code:size=8" };
-static const unsigned int baralpha       = 0xd0;
-static const unsigned int borderalpha    = OPAQUE;
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
 	[SchemeNorm] = { "#f3f4f5", "#223345", "#223345" },
 	[SchemeSel]  = { "#f3f4f5", "#333399", "#5353c6" },
-};
-static const unsigned int alphas[][3]      = {
-	/*               fg      bg        border     */
-	[SchemeNorm] = { OPAQUE, baralpha, borderalpha },
-	[SchemeSel]  = { OPAQUE, baralpha, borderalpha },
 };
 
 /* tagging */
