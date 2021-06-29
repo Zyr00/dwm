@@ -1,7 +1,9 @@
 /* See LICENSE file for copyright and license details. */
 #include <X11/XF86keysym.h>
 
+#define TERMINAL "alacritty"
 #define GAPPS 5
+
 /* appearance */
 static const unsigned int borderpx       = 2;     /* border pixel of windows */
 static const unsigned int gappx          = GAPPS; /* gaps between windows */
@@ -25,11 +27,12 @@ static const Rule rules[] = {
 	 *	WM_NAME(STRING) = title
 	 */
 	/* class          instance         title            tags mask   isfloating  isterminal  noswallow  monitor */
-	{ "Firefox",      "Toolkit",       NULL,            0,          1,          0,          0,         -1 },
+	{ "Firefox",      "Toolkit",       NULL,            0,          1,          0,           0,        -1 },
         { "discord",      NULL,            NULL,            1 << 8,     0,          0,          -1,        -1 },
         { "Steam",        NULL,            NULL,            1 << 7,     0,          0,          -1,        -1 },
-        { "Godot",        NULL,            NULL,            1 << 2,     1,          0,          -1,        -1 },
         { "st",           NULL,            NULL,            0,          0,          1,          -1,        -1 },
+        { "Alacritty",    NULL,            NULL,            0,          0,          1,          -1,        -1 },
+        { "Gnuplot",      NULL,            NULL,            0,          0,          1,           1,        -1 },
         { NULL,           NULL,           "Event Tester",   0,          1,          0,           1,        -1 }, /* xev */
 };
 
@@ -67,7 +70,7 @@ static const Layout layouts[] = {
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, NULL };
-static const char *termcmd[]  = { "st", NULL };
+static const char *termcmd[]  = { TERMINAL, NULL };
 
 static const char *flameshot[] = { "flameshot", "gui", NULL };
 static const char *lockcmd[] = { "i3lockrc", NULL };
