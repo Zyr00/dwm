@@ -201,8 +201,8 @@ drw_clr_create(Drw *drw, Clr *dest, const char *clrname)
 
 	if (!XftColorAllocName(drw->dpy, DefaultVisual(drw->dpy, drw->screen),
 	                       DefaultColormap(drw->dpy, drw->screen),
-						   clrname, dest))
- 		die("error, cannot allocate color '%s'", clrname);
+	                       clrname, dest))
+		die("error, cannot allocate color '%s'", clrname);
 }
 
 /* Wrapper to create color schemes. The caller has to call free(3) on the
@@ -275,7 +275,7 @@ drw_text(Drw *drw, int x, int y, unsigned int w, unsigned int h, unsigned int lp
 		XSetForeground(drw->dpy, drw->gc, drw->scheme[invert ? ColFg : ColBg].pixel);
 		XFillRectangle(drw->dpy, drw->drawable, drw->gc, x, y, w, h);
 		d = XftDrawCreate(drw->dpy, drw->drawable,
-						  DefaultVisual(drw->dpy, drw->screen),
+		                  DefaultVisual(drw->dpy, drw->screen),
 		                  DefaultColormap(drw->dpy, drw->screen));
 		x += lpad;
 		w -= lpad;
